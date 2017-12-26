@@ -5,22 +5,8 @@ general:
 
 specific:
 tyler:
-- re. trip_id logic: i was looking through your trainTrip table and wasn't sure about the logic you're using for the trip_id (which
-i'm suggesting below we rename to trip_num, as _id implies uniqueness): it seems you're tying trip_id to the LineID and
-not the (dateadded, StationID) combination (ie. on 2017-12-11 there are two trips labeled '0', one on the 'GRN' line another
-on 'ORG'. i suggest we tie trip_id (aka trip_num) to (dateadded, StationID): in other words, trip_num should number
-the trips ending at each station.
-- re. reducing data, pt 1.: having mentioned the above, i think this is basically what we need. for every station, repeat the following:
-pick up the first report with a Time1_Est > 0 ocurring after a Time1_Est = 0 and call that time_announced,
-find the first time after time_announced with Time1_Est = 0 and call that time_arrived.
-from time_announced and time_arrived we can calculate all the statistics we're interested in.
-- re. reducing data, pt 2.: the script i currently have written essentially wittles the database down to time_announced
-and time_arrived (with some logic to filter out ghost trains, but you shouldn't need to worry about that, i'll deal
-with those on my end). however, if as you said on slack, you'd prefer to store only this, i'll amend my script to deal
-with this database structure. let me know.
-- re. workflow: if indeed you can get the time_announced and time_arrived (as it seems you're currently doing for
-GVB-NB/SB on trainTrip) from the transit api, then what i'm thinking is i'll store a python script on your server and have it
-run with whatever inputs come from the GET requests and return a json string.
+- est_error should be other way around (actual - projected), ie. if the result is negative this means the
+train arrived early
 
 az:
 
@@ -43,7 +29,7 @@ andres:
                 "station_report" : {
                     "station_id" : "x",
                     "trips": [
-                        {"trip_num" : "", "time_announced" : "HH:MM:SS", "projected_duration" : "x", "time_arrived" : "HH:MM:SS", "actual_duration" : "x"}
+                        {"time_announced" : "HH:MM:SS", "projected_duration" : "x", "time_arrived" : "HH:MM:SS", "actual_duration" : "x", "time_since_last_train" : "x"}
                     ]
                 }
         }
@@ -59,7 +45,7 @@ andres:
                 "station_id" : "GVB-NB",
                 "trips": [
                     {"trip_num" : "1", "time_announced" : "13:00:00", "projected_duration" : "120", "time_arrived" : "13:02:20", "actual_duration" : "140"}
-                    {"trip_num" : "2", "time_announced" : "13:01:00", "projected_duration" : "125", "time_arrived" : "13:03:35", "actual_duration" : "155"}
+                    {"trip_num" : "2", "time_announced" : "13:01:00", "projected_duration" : "125", "time_arrived" : "13:03:35", "actual_duration" : "155”, “time_from(since?)_last_train” : “x”}
                 ]
             }
             "station_report" : {
