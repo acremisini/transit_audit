@@ -171,7 +171,7 @@ def make_json_string(stats_dict, station_dict, stats, timespan_start, timespan_e
 
     json_str = json.dumps(json_dict, indent=3, separators=(',', ': '), sort_keys=True)
     #print(json_str)
-    print(json_dict)
+    #print(json_dict)
 
 timespan_start = sys.argv[1]
 timespan_end = sys.argv[2]
