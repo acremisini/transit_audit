@@ -28,6 +28,7 @@ def connect_and_return_data(timespan_start, timespan_end):
                 ORDER BY StationID, Time1_Train, dateadded;
                 """.format(timespan_start, timespan_end)
             result = pd.read_sql_query(query, connection)
+            print(result)
     finally:
         connection.close()
         return result
@@ -106,7 +107,7 @@ def make_data_dicts(df, stats, station_list):
 def make_json_string(stats_dict, station_dict, stats, timespan_start, timespan_end):
     if stats:
         json_dict = \
-            {"\"transit_report\"": {
+            {"transit_report": {
                     "timespan_start" : timespan_start,
                     "timespan_end" : timespan_end,
                     "data" : {
