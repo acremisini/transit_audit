@@ -28,7 +28,6 @@ def connect_and_return_data(timespan_start, timespan_end):
                 ORDER BY StationID, Time1_Train, dateadded;
                 """.format(timespan_start, timespan_end)
             result = pd.read_sql_query(query, connection)
-            print(result)
     finally:
         connection.close()
         return result
@@ -61,6 +60,7 @@ def make_data_dicts(df, stats, station_list):
         try:
             if df[i]['StationID'] in station_list:
                 if df[i]['StationID'] not in station_dict:
+                    print(df[i]['StationID'])
                     station_dict[str(df[i]['StationID'])] = pd.DataFrame(columns=['trip_num',
                                                                                  'time_announced',
                                                                                  'projected_duration',
